@@ -1,5 +1,9 @@
 // { id, name }
-export const MATERIALS_LOADED = 'MaterialsLoaded';
+const MATERIALS_LOADED = 'MaterialsLoaded';
+export const materialsLoaded = payload => ({
+	payload, type: MATERIALS_LOADED
+});
+
 const initState = [];
 
 export const materials = (state = initState, action) => {

@@ -1,5 +1,9 @@
 // { id, name, city }
-export const SUBURBS_LOADED = 'SuburbsLoaded';
+const SUBURBS_LOADED = 'SuburbsLoaded';
+export const suburbsLoaded = payload => ({
+	payload, type: SUBURBS_LOADED
+});
+
 const initState = [];
 
 export const suburbs = (state = initState, action) => {
