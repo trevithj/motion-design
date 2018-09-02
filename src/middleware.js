@@ -8,14 +8,12 @@ const promiseMiddleware = store => next => action => {
 
     action.payload.then(
       res => {
-        const currentState = store.getState()
         console.log('RESULT', res);
         action.payload = res;
         store.dispatch({ type: ASYNC_END, promise: action.payload });
         store.dispatch(action);
       },
       error => {
-        const currentState = store.getState()
         console.log('ERROR', error);
         action.error = true;
         action.payload = error.response.body;
@@ -29,7 +27,9 @@ const promiseMiddleware = store => next => action => {
 };
 
 const localStorageMiddleware = store => next => action => {
-  next(action);
+	const res = next(action);
+	console.log(store.getState());
+	return res;
 };
 
 function isPromise(v) {
