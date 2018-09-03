@@ -32,8 +32,9 @@ const ColHead = styled(Col)`
     background-color: #ddd;
 `;
 
-const Input = styled.input`
+const Input = styled.textarea`
     border: none;
+    width: calc(100% - 4px);
 `;
 
 const headings = 'Room,Length,Width,Pleats,Style,Notes'.split(',');
@@ -50,14 +51,15 @@ const makeHeadings = (headings) => (
 );
 
 const makeRows = rows => rows.map(
-    row => (<Row key={row.id}>{makeCells(getCellData(row))}</Row>)
+    row => (<Row key={row.id}>{makeCells(row.id, getCellData(row))}</Row>)
 );
 
-const makeCells = (cells, Cell = Col) => cells.map(
+const makeCells = (id, cells) => cells.map(
     (cell, i) => (
-        <Cell key={uuid()} width={widths[i]}>
-            <Input type="text" name={headings[i].toLowerCase()} defaultValue={cell} />
-        </Cell>
+        <Col key={uuid()} width={widths[i]}>
+            <Input name={`${id}:${headings[i].toLowerCase()}`}
+                type="text" defaultValue={cell} />
+        </Col>
     )
 );
 
@@ -72,16 +74,17 @@ const getCellData = row => {
     ];
 }
 
-
 const Body = props => {
     const curtains = props.products.curtains || [];
     return (
         <Container>
-            <Table>
-                <Caption>Curtains:</Caption>
-                {makeHeadings(headings)}
-                {makeRows(curtains)}
-            </Table>
+            <form onChange={props.handleChange}>
+                <Table>
+                    <Caption>Curtains:</Caption>
+                    {makeHeadings(headings)}
+                    {makeRows(curtains)}
+                </Table>
+            </form>
         </Container>
 
     );

@@ -4,18 +4,17 @@ const UPDATE_CUSTOMER = 'UpdateCustomer';
 export const setCustomer = payload => ({
 	payload, type: SET_CUSTOMER
 });
-export const updateCustomer = payload => ({
-	payload, type: UPDATE_CUSTOMER
+export const updateCustomer = ({name, value}) => ({
+	payload: {[name]: value}, type: UPDATE_CUSTOMER
 });
 const initState = {};
 
+const map = {
+    [SET_CUSTOMER]: (state, payload) => payload,
+    [UPDATE_CUSTOMER]: (state, payload) => Object.assign({}, state, payload),
+};
+
 export const customer = (state = initState, action) => {
-    switch(action.type) {
-        case SET_CUSTOMER:
-            return action.payload;
-        case UPDATE_CUSTOMER:
-            return Object.assign({}, state, action.payload);
-        default:
-            return state;
-    }
+    const reducer = map[action.type];
+    return reducer ? reducer(state, action.payload) : state;
 };

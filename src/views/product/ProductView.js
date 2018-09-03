@@ -17,6 +17,7 @@ const mapDispatchToProps = dispatch => ({
   setColours: (payload) => dispatch(coloursLoaded(payload)),
   setMaterials: (payload) => dispatch(materialsLoaded(payload)),
   setData: (data) => {
+		console.info(data);
 		dispatch(setCustomer(data.customer));
 		dispatch(productsLoaded(data.products));
 	},
@@ -27,13 +28,24 @@ const mapDispatchToProps = dispatch => ({
   updateCurtains: (payload) => dispatch(updateCurtains(payload)),
 });
 
+const getChangeHandler = handler => e => {
+	const {name, value} = e.target;
+	handler({name: value});
+}
+
+
 const getHeaderProps = props => ({
 	title: props.title,
 	customer: props.customer,
-	onChange: props.updateCustomer,
+	handleChange: getChangeHandler(props.updateCustomer),
 	suburbs: props.suburbs,
 	materials: props.materials,
 	colours: props.colours
+});
+
+const getBodyProps = props => ({
+	products: props.products,
+	handleChange: getChangeHandler(props.updateCurtains)
 });
 
 class ProductView extends React.Component {
@@ -59,7 +71,7 @@ class ProductView extends React.Component {
 		return (
 		  <div>
 				<Header {...getHeaderProps(props)} />
-				<Body products={props.products} />
+				<Body {...getBodyProps(props)} />
 			{/* <pre>{JSON.stringify(props, null, 3)}</pre> */}
 		  </div>
 		);

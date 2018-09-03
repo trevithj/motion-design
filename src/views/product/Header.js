@@ -23,14 +23,8 @@ const Col = styled.div`
 `;
 
 
-const getChangeHandler = handler => e => {
-    const {name, value} = e.target;
-    handler({[name]: value});
-}
-
 const Header = props => {
-    const {title, customer, onChange} = props;
-    const handleChange = getChangeHandler(onChange);
+    const {title, customer, handleChange} = props;
     return (
         <Container>
             <Title>{title}</Title>

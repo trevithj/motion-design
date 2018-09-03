@@ -28,7 +28,7 @@ const promiseMiddleware = store => next => action => {
 
 const localStorageMiddleware = store => next => action => {
 	const res = next(action);
-	console.log(store.getState());
+	// console.log(store.getState());
 	return res;
 };
 
