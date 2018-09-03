@@ -33,7 +33,6 @@ const getChangeHandler = handler => e => {
 	handler({name, value});
 }
 
-
 const getHeaderProps = props => ({
 	title: props.title,
 	customer: props.customer,

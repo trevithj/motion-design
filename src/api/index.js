@@ -10,7 +10,6 @@ export const getMaterials = doGet('materials');
 export const getSuburbs = doGet('suburbs');
 
 export const postData = (data = {}) => {
-  // Default options are marked with *
     return fetch(`${BASE}/data`, {
         method: "POST",
         cache: "no-cache",

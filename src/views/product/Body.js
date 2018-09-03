@@ -58,20 +58,20 @@ const makeHeadings = (headings) => (
     </Row>
 );
 
-const makeRows = (rows, getDeleteHandler) => rows.map(
+const makeRows = (rows, getDeleteHandler, handleChange) => rows.map(
     row => (
         <Row key={row.id}>
-            {makeCells(row.id, getCellData(row))}
+            {makeCells(row.id, getCellData(row), handleChange)}
             <Del onClick={getDeleteHandler(row.id)}>X</Del>
         </Row>
     )
 );
 
-const makeCells = (id, cells) => cells.map(
+const makeCells = (id, cells, handleChange) => cells.map(
     (cell, i) => (
         <Col key={uuid()} width={widths[i]}>
             <Input name={`${id}:${headings[i].toLowerCase()}`}
-                type="text" defaultValue={cell} />
+                type="text" defaultValue={cell} onBlur={handleChange}/>
         </Col>
     )
 );
@@ -95,11 +95,11 @@ const Body = props => {
     const curtains = props.products.curtains || [];
     return (
         <Container>
-            <form onChange={props.handleChange}>
+            <form>
                 <Table>
                     <Caption>Curtains:</Caption>
                     {makeHeadings(headings)}
-                    {makeRows(curtains, getDeleteHandler)}
+                    {makeRows(curtains, getDeleteHandler, props.handleChange)}
                 </Table>
             </form>
         </Container>

@@ -6,9 +6,11 @@ const UPDATE_CURTAINS = 'UpdateCurtains';
 export const productsLoaded = payload => ({
 	payload, type: PRODUCTS_LOADED
 });
-export const addCurtains = payload => ({
-	payload, type: ADD_CURTAINS
-});
+export const addCurtains = () => {
+    return {
+	    type: ADD_CURTAINS
+    };
+};
 export const deleteCurtains = payload => ({
 	payload, type: DELETE_CURTAINS
 });
