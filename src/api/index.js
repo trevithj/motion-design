@@ -1,4 +1,5 @@
 const BASE = 'http://localhost:8181';
+//const BASE = 'http://localhost:4100/mockData';
 
 const doGet = path => () => fetch(`${BASE}/${path}`)
 	.then(response => response.json());
@@ -13,6 +14,7 @@ export const postData = (data = {}) => {
     return fetch(`${BASE}/data`, {
         method: "POST",
         cache: "no-cache",
+        mode: "cors",
         headers: {
             "Content-Type": "application/json; charset=utf-8",
         },

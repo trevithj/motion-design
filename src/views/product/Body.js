@@ -37,6 +37,14 @@ const Input = styled.textarea`
     width: calc(100% - 4px);
 `;
 
+const Del = styled.div`
+    display: inline-block;
+    padding: 0 5px 0 5px;
+    background-color: silver;
+    border: solid thin silver;
+    cursor: pointer 
+`;
+
 const headings = 'Room,Length,Width,Pleats,Style,Notes'.split(',');
 const widths = '15%,8%,8%,14%,15%,40%'.split(',');
 
@@ -50,8 +58,13 @@ const makeHeadings = (headings) => (
     </Row>
 );
 
-const makeRows = rows => rows.map(
-    row => (<Row key={row.id}>{makeCells(row.id, getCellData(row))}</Row>)
+const makeRows = (rows, getDeleteHandler) => rows.map(
+    row => (
+        <Row key={row.id}>
+            {makeCells(row.id, getCellData(row))}
+            <Del onClick={getDeleteHandler(row.id)}>X</Del>
+        </Row>
+    )
 );
 
 const makeCells = (id, cells) => cells.map(
@@ -74,7 +87,11 @@ const getCellData = row => {
     ];
 }
 
+
 const Body = props => {
+    const getDeleteHandler = id => () => {
+        props.handleDelete({id});
+    }
     const curtains = props.products.curtains || [];
     return (
         <Container>
@@ -82,7 +99,7 @@ const Body = props => {
                 <Table>
                     <Caption>Curtains:</Caption>
                     {makeHeadings(headings)}
-                    {makeRows(curtains)}
+                    {makeRows(curtains, getDeleteHandler)}
                 </Table>
             </form>
         </Container>

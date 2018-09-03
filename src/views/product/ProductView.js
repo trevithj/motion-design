@@ -8,16 +8,16 @@ import { productsLoaded, addCurtains, deleteCurtains, updateCurtains } from '../
 import { suburbsLoaded } from '../../reducers/suburbs';
 import Header from './Header';
 import Body from './Body';
+import Footer from './Footer';
 
 const mapStateToProps = ({productView}) => {
     return productView;
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
   setColours: (payload) => dispatch(coloursLoaded(payload)),
   setMaterials: (payload) => dispatch(materialsLoaded(payload)),
   setData: (data) => {
-		console.info(data);
 		dispatch(setCustomer(data.customer));
 		dispatch(productsLoaded(data.products));
 	},
@@ -30,7 +30,7 @@ const mapDispatchToProps = dispatch => ({
 
 const getChangeHandler = handler => e => {
 	const {name, value} = e.target;
-	handler({name: value});
+	handler({name, value});
 }
 
 
@@ -45,17 +45,26 @@ const getHeaderProps = props => ({
 
 const getBodyProps = props => ({
 	products: props.products,
-	handleChange: getChangeHandler(props.updateCurtains)
+	handleChange: getChangeHandler(props.updateCurtains),
+	handleDelete: props.deleteCurtains
+});
+
+const getFooterProps = props => ({
+	doAdd: props.addCurtains,
+	doBack: () => { alert('Not implemented yet.'); }
 });
 
 class ProductView extends React.Component {
 
-	// constructor(props) {
-	// 	super(props);
-	// 	this.onCustomerChange = (dat) => {
-	// 		this.props.updateCustomer(dat);
-	// 	}
-	// }
+	constructor(props) {
+		super(props);
+		this.saveAll = () => {
+			const { customer, products } = this.props;
+			API.postData({ customer, products }).then(data => {
+				console.info(data);
+			});
+		}
+	}
 
 	componentDidMount() {
 		//initial load
@@ -67,12 +76,11 @@ class ProductView extends React.Component {
 
 	render() {
 		const { props } = this;
-		console.log(props);
 		return (
 		  <div>
 				<Header {...getHeaderProps(props)} />
 				<Body {...getBodyProps(props)} />
-			{/* <pre>{JSON.stringify(props, null, 3)}</pre> */}
+				<Footer {...getFooterProps(props)} doSave={this.saveAll} />
 		  </div>
 		);
 
